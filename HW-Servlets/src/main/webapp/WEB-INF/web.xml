@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<web-app>
+    <servlet>
+        <servlet-name>SessionServlet</servlet-name>
+        <servlet-class>it.sevenbits.homework.servlet.SessionServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SessionServlet</servlet-name>
+        <url-pattern>/session</url-pattern>
+    </servlet-mapping>
+
+
+
+</web-app>
