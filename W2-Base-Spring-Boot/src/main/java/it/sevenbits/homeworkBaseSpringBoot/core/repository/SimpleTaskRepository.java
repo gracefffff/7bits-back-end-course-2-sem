@@ -6,10 +6,18 @@ import it.sevenbits.homeworkBaseSpringBoot.web.models.UpdateTaskRequest;
 
 import java.util.*;
 
+/**
+ * this is class is representation of the interface ITaskRepository
+ */
 public class SimpleTaskRepository implements ITaskRepository {
     private Map<String, Task> tasks;
 
-    public SimpleTaskRepository(Map<String, Task> tasks) {
+    /**
+     * this is construct of this class
+     *
+     * @param tasks - tasks which was stored in this repository
+     */
+    public SimpleTaskRepository(final Map<String, Task> tasks) {
         this.tasks = tasks;
     }
 
@@ -19,29 +27,37 @@ public class SimpleTaskRepository implements ITaskRepository {
     }
 
     @Override
-    public Task create(String text) {
+    public Task create(final String text) {
         Task newTask = new Task(UUID.randomUUID().toString(), text, TaskStatus.inbox);
         tasks.put(newTask.getId(), newTask);
         return newTask;
     }
 
-    public Task getTask(String id) {
+    @Override
+    public Task getTask(final String id) {
         return tasks.get(id);
     }
-    public Task deleteTask(String id) {
+
+    @Override
+    public Task deleteTask(final String id) {
         return tasks.remove(id);
     }
-    public Task updateTask(String id, UpdateTaskRequest updateTask) {
+
+    @Override
+    public Task updateTask(final String id, final UpdateTaskRequest updateTask) {
 
         Task currentTask = tasks.get(id);
         currentTask.setName(updateTask.getText() == null ? currentTask.getName() : updateTask.getText());
         currentTask.setStatus(updateTask.getStatus() == null ? currentTask.getStatus() : updateTask.getStatus());
         return currentTask;
     }
-    public boolean isTaskExist(String id) {
+
+    @Override
+    public boolean isTaskExist(final String id) {
         return tasks.containsKey(id);
     }
 
+    @Override
     public boolean isEmpty() {
         return tasks.isEmpty();
     }

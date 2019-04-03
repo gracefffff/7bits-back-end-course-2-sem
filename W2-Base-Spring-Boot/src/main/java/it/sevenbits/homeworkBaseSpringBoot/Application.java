@@ -3,10 +3,16 @@ package it.sevenbits.homeworkBaseSpringBoot;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+/**
+ *
+ */
 @SpringBootApplication
 public class Application {
-    public static void main(String[] args) {
+    /**
+     * this is point to start of application
+     * @param args
+     */
+    public static void main(final String[] args) {
         SpringApplication.run(Application.class, args);
     }
-
 }

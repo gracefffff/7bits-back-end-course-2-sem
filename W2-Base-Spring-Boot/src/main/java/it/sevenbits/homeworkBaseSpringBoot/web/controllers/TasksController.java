@@ -14,26 +14,47 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 
+/**
+ * this is bean which services requests
+ */
 @Controller
 @RequestMapping("/tasks")
 public class TasksController {
     private ITaskRepository taskRepository;
 
-    public TasksController(ITaskRepository taskRepository) {
+    /**
+     * this is constructor of this class
+     *
+     * @param taskRepository - repository of tasks
+     */
+    public TasksController(final ITaskRepository taskRepository) {
         this.taskRepository = taskRepository;
     }
+
+    /**
+     * function that processes the GET request and returns all the tasks
+     *
+     * @return list of all tasks
+     */
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<List> list() {
         if (taskRepository.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } else {
-            return  ResponseEntity.ok(taskRepository.getAllTasks());
+            return ResponseEntity.ok(taskRepository.getAllTasks());
         }
     }
+
+    /**
+     * function that processes the POST request and create a new task
+     *
+     * @param newTask the object which contains new name of task
+     * @return new created task
+     */
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity create(@RequestBody AddTaskRequest newTask) {
+    public ResponseEntity create(final @RequestBody AddTaskRequest newTask) {
         Task createdTask = taskRepository.create(newTask.getText());
 
         if (createdTask != null && !createdTask.getName().equals("")) {
@@ -45,46 +66,61 @@ public class TasksController {
         } else {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
+    }
 
-    } @RequestMapping(value = "/{id}",
-            method = RequestMethod.GET)
-
+    /**
+     * function that processes the GET request and returns task by its id
+     *
+     * @param id - id of returned task
+     * @return task
+     */
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity getTask(@RequestBody @PathVariable String id) {
+    public ResponseEntity getTask(final @RequestBody @PathVariable String id) {
         Task taskToReturn = taskRepository.getTask(id);
         if (taskToReturn == null) {
-           return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
         return ResponseEntity.ok(taskToReturn);
     }
 
-    @RequestMapping(value = "/{id}",
-            method = RequestMethod.DELETE)
+    /**
+     * function that processes the DELETE request and delete task by its id
+     *
+     * @param id - id of the task
+     * @return deleted task
+     */
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ResponseBody
-    public ResponseEntity deleteTask(@RequestBody @PathVariable String id) {
+    public ResponseEntity deleteTask(final @RequestBody @PathVariable String id) {
         if (taskRepository.deleteTask(id) == null) {
-            return  new ResponseEntity(HttpStatus.NOT_FOUND);
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity(HttpStatus.OK);
 
     }
+
+    /**
+     * function that processes the PATCH request and update task by its id
+     *
+     * @param updateTask - the object which contains the new name and status of the task
+     * @param id         - id of the task
+     * @return new updated task
+     */
     @RequestMapping(value = "/{id}",
             method = RequestMethod.PATCH)
     @ResponseBody
-    public ResponseEntity updateTask(@RequestBody UpdateTaskRequest updateTask, @PathVariable String id) {
+    public ResponseEntity updateTask(final @RequestBody UpdateTaskRequest updateTask, final @PathVariable String id) {
         if (!taskRepository.isTaskExist(id)) {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
-        if((!TaskStatus.isExists(updateTask.getStatus()))) {
+        if ((!TaskStatus.isExists(updateTask.getStatus()))) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
-        taskRepository.updateTask(id,updateTask);
+        taskRepository.updateTask(id, updateTask);
         return new ResponseEntity(HttpStatus.OK);
 
     }
-
-
-
 }
 
 

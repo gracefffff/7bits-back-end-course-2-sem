@@ -2,17 +2,25 @@ package it.sevenbits.homeworkBaseSpringBoot.web.models;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import it.sevenbits.homeworkBaseSpringBoot.core.model.TaskStatus;
 
+/**
+ * this class is update task request model
+ */
 public class UpdateTaskRequest {
     private  String text;
     private String status;
+
+    /**
+     * it's a constructor of this class
+     * @param text - text of task
+     * @param status - status of task
+     */
     @JsonCreator
-    public UpdateTaskRequest(@JsonProperty("text") final String text, @JsonProperty("status") String status) {
+    public UpdateTaskRequest(@JsonProperty("text") final String text, final @JsonProperty("status") String status) {
         this.text = text;
         this.status = status;
     }
-    public String getText(){
+    public String getText() {
         return text;
     }
 
