@@ -2,28 +2,28 @@ package it.sevenbits.homeworkBaseSpring.core.repository;
 
 import it.sevenbits.homeworkBaseSpring.core.model.Task;
 
-import java.util.ArrayList;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class SimpleTaskRepository implements ITaskRepository {
-private List<Task> tasks= new ArrayList<>();
+private HashMap<String, String> tasks= new HashMap<>();
 
     @Override
     public List<Task> getAllTasks() {
-        return Collections.unmodifiableList(tasks);
+        List<Task> phones = entry.getValue();
+       // return tasks.values();
     }
 
     @Override
     public Task create(Task task) {
         Task newTask = new Task(UUID.randomUUID().toString(), task.getName());
-        tasks.add(newTask);
+        tasks.put(newTask.getId(), newTask.getName());
         return newTask;
     }
 
     public boolean isEmpty() {
         return tasks.isEmpty();
     }
+   // public Task getTask(String id) {
+  //      return tasks.get()
+   // }
 }
