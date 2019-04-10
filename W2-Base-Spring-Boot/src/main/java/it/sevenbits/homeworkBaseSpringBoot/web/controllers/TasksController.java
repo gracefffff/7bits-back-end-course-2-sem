@@ -34,16 +34,16 @@ public class TasksController {
 
     /**
      * function that processes the GET request and returns all the tasks
-     *
-     * @return list of all tasks
+     * @param status status of task
+     * @return list of task with this status
      */
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<List> list() {
+    public ResponseEntity<List> list(final @RequestParam("status") String status) {
         if (taskRepository.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } else {
-            return ResponseEntity.ok(taskRepository.getAllTasks());
+            return ResponseEntity.ok(taskRepository.getAllTaskByStatus(status));
         }
     }
 
@@ -63,7 +63,7 @@ public class TasksController {
             URI location = UriComponentsBuilder.fromPath("/tasks/")
                     .path(String.valueOf(createdTask.getId()))
                     .build().toUri();
-            return ResponseEntity.created(location).body(createdTask);
+            return ResponseEntity.created(location).build();
         } else {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
@@ -80,7 +80,7 @@ public class TasksController {
     public ResponseEntity getTask(final @RequestBody @PathVariable String id) {
         Task taskToReturn = taskRepository.getTask(id);
         if (taskToReturn == null) {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
         return ResponseEntity.ok(taskToReturn);
     }

@@ -23,6 +23,12 @@ public interface ITaskRepository {
     Task create(String text);
 
     /**
+     * this function returns list of Task with the same status
+     * @param status -string value status of task
+     * @return list of tasks with  equals status
+     */
+     List<Task> getAllTaskByStatus(String status);
+    /**
      * this function checks is repository empty or not
      * @return boolean value true - if repository is empty
      * false - if repository is not empty

@@ -4,6 +4,8 @@ import it.sevenbits.homeworkBaseSpringBoot.core.model.Task;
 import it.sevenbits.homeworkBaseSpringBoot.core.model.TaskStatus;
 import it.sevenbits.homeworkBaseSpringBoot.web.models.UpdateTaskRequest;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.*;
 
 /**
@@ -23,11 +25,28 @@ public class SimpleTaskRepository implements ITaskRepository {
 
     @Override
     public List<Task> getAllTasks() {
+
         return Collections.unmodifiableList(new ArrayList<>(tasks.values()));
     }
 
+    /**
+     * this function returns list of Task with the same status
+     * @param status -string value status of task
+     * @return list of tasks with  equals status
+     */
+    public List<Task> getAllTaskByStatus(final String status) {
+        ArrayList<Task> selectedTasks = new ArrayList<>();
+        for (Task task : tasks.values()
+        ) {
+            if (task.getStatus().equals(status)) {
+                selectedTasks.add(task);
+            }
+        }
+        return selectedTasks;
+    }
+
     @Override
-    public Task create(final String text) {
+    public Task create(@NotBlank @NotNull final String text) {
         Task newTask = new Task(UUID.randomUUID().toString(), text, TaskStatus.inbox);
         tasks.put(newTask.getId(), newTask);
         return newTask;
