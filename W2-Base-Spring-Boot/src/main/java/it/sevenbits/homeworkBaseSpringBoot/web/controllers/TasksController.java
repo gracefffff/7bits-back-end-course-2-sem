@@ -39,13 +39,11 @@ public class TasksController {
      */
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<List> list(final @RequestParam("status") String status) {
-        if (taskRepository.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        } else {
-            return ResponseEntity.ok(taskRepository.getAllTaskByStatus(status));
+    public ResponseEntity<List> list(final @RequestParam(name = "status", required = false, defaultValue = "inbox") String status) {
+
+        return ResponseEntity.ok(taskRepository.getAllTaskByStatus(status));
         }
-    }
+
 
     /**
      * function that processes the POST request and create a new task
@@ -56,10 +54,10 @@ public class TasksController {
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity create(final @RequestBody AddTaskRequest newTask) {
-        Task createdTask = taskRepository.create(newTask.getText());
 
-        if (createdTask != null && !createdTask.getName().equals("")) {
 
+        if (newTask != null && !newTask.getText().equals("")) {
+            Task createdTask = taskRepository.create(newTask.getText());
             URI location = UriComponentsBuilder.fromPath("/tasks/")
                     .path(String.valueOf(createdTask.getId()))
                     .build().toUri();
