@@ -12,6 +12,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import java.net.URI;
 import java.util.List;
 
@@ -53,7 +55,7 @@ public class TasksController {
      */
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity create(final @RequestBody AddTaskRequest newTask) {
+    public ResponseEntity create(final  @Valid @RequestBody AddTaskRequest newTask) {
 
 
         if (newTask != null && !newTask.getText().equals("")) {

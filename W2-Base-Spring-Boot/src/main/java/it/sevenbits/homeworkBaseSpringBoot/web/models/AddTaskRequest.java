@@ -3,10 +3,14 @@ package it.sevenbits.homeworkBaseSpringBoot.web.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.validation.constraints.NotBlank;
+
 /**
  *this class is  add task request model
  */
+
 public class AddTaskRequest {
+    @NotBlank
     private  String text;
 
     /**
